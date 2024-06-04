@@ -43,10 +43,11 @@ npm run build
 yarn build
 ```
 
-## Класс с работа с Api и обработчиком событий EventEmitter 
-
+## Класс с работа с Api и обработчиком событий EventEmitter
+```TypeScript
 // Класс для работы с API
 export class Api {
+
     // базовый URL для Api
     readonly baseUrl: string;
     // опции для fetch
@@ -61,3 +62,4 @@ export class Api {
     // post запрос
     post(uri: string, data: object, method: ApiPostMethods = 'POST') {}
 }
+```
