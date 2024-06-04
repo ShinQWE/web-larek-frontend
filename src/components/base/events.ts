@@ -19,6 +19,7 @@ export interface IEvents {
  * или слушать события по шаблону например
  */
 export class EventEmitter implements IEvents {
+    // Map состоящий из событий и подписчиков
     _events: Map<EventName, Set<Subscriber>>;
 
     constructor() {

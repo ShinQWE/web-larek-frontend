@@ -5,10 +5,14 @@ export type ApiListResponse<Type> = {
 
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
+// Класс для работы с API
 export class Api {
+    // базовый URL для Api
     readonly baseUrl: string;
+    // опции для fetch
     protected options: RequestInit;
 
+    // конструктор принимает базовый URL и опции
     constructor(baseUrl: string, options: RequestInit = {}) {
         this.baseUrl = baseUrl;
         this.options = {
@@ -19,12 +23,14 @@ export class Api {
         };
     }
 
+    // обрабатывает запрос и возвращает промис с данными
     protected handleResponse(response: Response): Promise<object> {
         if (response.ok) return response.json();
         else return response.json()
             .then(data => Promise.reject(data.error ?? response.statusText));
     }
 
+    // get запрос
     get(uri: string) {
         return fetch(this.baseUrl + uri, {
             ...this.options,
@@ -32,6 +38,7 @@ export class Api {
         }).then(this.handleResponse);
     }
 
+    // post запрос
     post(uri: string, data: object, method: ApiPostMethods = 'POST') {
         return fetch(this.baseUrl + uri, {
             ...this.options,
