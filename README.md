@@ -42,3 +42,22 @@ npm run build
 ```
 yarn build
 ```
+
+## Класс с работа с Api и обработчиком событий EventEmitter 
+
+// Класс для работы с API
+export class Api {
+    // базовый URL для Api
+    readonly baseUrl: string;
+    // опции для fetch
+    protected options: RequestInit;
+    
+    // конструктор принимает базовый URL и опции
+    constructor(baseUrl: string, options: RequestInit = {}) {}
+    // обрабатывает запрос и возвращает промис с данными
+    protected handleResponse(response: Response): Promise<object> {}
+    // get запрос
+    get(uri: string) {}
+    // post запрос
+    post(uri: string, data: object, method: ApiPostMethods = 'POST') {}
+}
