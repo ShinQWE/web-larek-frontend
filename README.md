@@ -115,12 +115,6 @@ export interface ISuccess {
 - getTotal(); // получить общую сумму заказа.
 - setOrderField(); // отслеживать изменения полей заказа.
 
- ## Класс WEBLarekAPI
- Класс для связи и получения информации с сервера.
- Содержит методы:
-- getCardList(); // получить с сервера все карточки
-- sendResults(); // отправить результат заказа
-
 # База код
 
 ## Класс EventEmitter
@@ -142,9 +136,49 @@ export interface ISuccess {
 - get(uri: string) - get запрос (ответ с сервера)
 - post(uri: string, data: object, method: ApiPostMethods = 'POST') - post запрос (отправить данные на сервер)
 
+## Класс Component
+Класс представления, от которого наследуют все другие классы представления - это класс Component.
+От него непосредственно наследуют "общие" классы представления Modal, Basket, Form, Success.
+
+Содержит методы:
+
+- protected setText(element: HTMLElement, value: unknown) -  Установить текстовое содержимое
+- toggleClass(element: HTMLElement, className: string, force?: boolean) - Переключить класс
+- setDisabled(element: HTMLElement, state: boolean) - Сменить статус блокировки
+- protected setHidden(element: HTMLElement) - Скрыть
+- protected setVisible(element: HTMLElement) - Показать
+- protected setImage(element: HTMLImageElement, src: string, alt?: string) - Установить изображение с алтернативным текстом
+- render(data?: Partial<T>): HTMLElement - Вернуть корневой DOM-элемент
+
+## Класс Model
+Базовая модель, чтобы можно было отличить ее от простых объектов с данными
+
+Содержит:
+
+- const isModel = (obj: unknown): obj is Model<any> - Гарда для проверки на модель
+- emitChanges(event: string, payload?: object) - Сообщить всем что модель поменялась
+
 # View - компоненты представления
 
+## Класс Modal
+Класс управления поведением модальных окон. Наследует класс Component. 
 
+Содержит:
+
+- set content(value: HTMLElement) - установить содержимое модального окна
+- open()
+- close()
+- render(data: IModalData): HTMLElement - вывести данные
+
+## Класс Form
+Класс для управления формами. Наследует класс Component.
+
+Содержит: 
+
+- protected onInputChange(field: keyof T, value: string) - изменение значений полей формы
+- set valid(value: boolean) - установить валидацию полей
+- set errors(value: string) - установить вывод об ошибках
+- render(state: Partial<T> & IFormState) - возвращает форму с новым состоянием
 
 
 
