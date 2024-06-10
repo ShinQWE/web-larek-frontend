@@ -21,11 +21,9 @@ export interface ICardProduct {
 	price: number | string | null; // цена
 }
 
-// Отображение корзины, что в ней находится
+// Интерфейс, описывающий содержимое корзины
 export interface IBasket {
-	items: HTMLElement[]; // товары в корзине
-	selectedId: string[]; // id товарова, которые выбраны
-	totalPrice: number | string; // цена всех товаров (синапс)
+	items: HTMLElement[]; // элементы представляющие товары в корзине
 }
 
 // Адрес доставки
@@ -44,4 +42,21 @@ export interface IContactsForm {
 export interface ISuccess {
 	id: string; // Идентификатор завершенного заказа
 	total: number | string; // Цена заказа (Итог)
+}
+
+export interface AppData {
+	clearBasket(): void; 
+// очистить корзину
+	getBasketList(): []; 
+// получить список корзины
+	toggleBasketList(): void; 
+// удалить или добавить товар в список корзины
+	setCatalog(): void; 
+// установить список товаров
+	getTotal(): number; 
+// получить общую сумму заказа
+	setOrderField(): void; 
+// отслеживать изменения полей заказа
+	setContactsField(): void; 
+// отслеживать изменения полей контактной информации
 }
