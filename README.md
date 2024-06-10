@@ -59,16 +59,88 @@ MVP:
 
 ## Типы данных
 
-В проекте используется несколько типов данных и интерфейсов, в том числе:
+В проекте используется несколько типов данных и интерфейсов:
 
 - IPage: Интерфейс главной страницы.
+  
+```
+export interface IPage {
+	catalogCard: HTMLElement[]; // каталог карт выводимых на сайт
+}
+```
 - CategoryType: Введите категорию продукта.
+
+```
+export type CategoryType =
+	| 'другое'
+	| 'софт-скил'
+	| 'дополнительное'
+	| 'кнопка'
+	| 'хард-скил';
+```
 - ICardProduct: Интерфейс карточки товара.
+
+```
+export interface ICardProduct {
+	id: string; // id
+	category: CategoryType; // категория товара
+	img: string; // картинка
+	description: string; // описание товара
+	title: string; // название товара
+	price: number | string | null; // цена
+}
+```
 - IBasket: Интерфейс, описывающий содержимое корзины.
+
+```
+export interface IBasket {
+	items: HTMLElement[]; // элементы представляющие товары в корзине
+}
+```
 - IOrderForm: Интерфейс адреса доставки.
+
+```
+export interface IOrderForm {
+	paymentMethod: string; // способ оплаты (при получении/онлайн)
+	address: string; // адресс
+}
+```
 - IContactsForm: Интерфейс для контактной информации.
+
+```
+export interface IContactsForm {
+	email: string; // email
+	phone: string; // телефон
+}
+```
 - ISuccess: Интерфейс для завершения заказа.
+
+```
+export interface ISuccess {
+	id: string; // Идентификатор завершенного заказа
+	total: number | string; // Цена заказа (Итог)
+}
+```
 - AppData: Интерфейс для данных приложения.
+
+```
+export interface AppData {
+	clearBasket(): void; 
+// очистить корзину
+	getBasketList(): []; 
+// получить список корзины
+	toggleBasketList(): void; 
+// удалить или добавить товар в список корзины
+	setCatalog(): void; 
+// установить список товаров
+	getTotal(): number; 
+// получить общую сумму заказа
+	setOrderField(): void; 
+// отслеживать изменения полей заказа
+	setContactsField(): void; 
+// отслеживать изменения полей контактной информации
+}
+```
 
 ## Компоненты данных
 
