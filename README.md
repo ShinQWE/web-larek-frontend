@@ -61,56 +61,34 @@ MVP:
 
 В проекте используется несколько типов данных и интерфейсов:
 
-- IPage: Интерфейс главной страницы.
+- ProductStatus: тип статус товара
 
 ```
-export interface IPage {
-	catalogCard: HTMLElement[]; // каталог карт выводимых на сайт
-}
+export type TProductStatus = 'active' | 'closed';
 ```
 
-- CategoryType: Введите категорию продукта.
-
-```
-export type CategoryType =
-	| 'другое'
-	| 'софт-скил'
-	| 'дополнительное'
-	| 'кнопка'
-	| 'хард-скил';
-```
-
-- ICardProduct: Интерфейс карточки товара.
-
+- ICardProduct: интерфейс описание карточки
 ```
 export interface ICardProduct {
 	id: string; // id
-	category: CategoryType; // категория товара
-	img: string; // картинка
+	category: string; // категория товара
+	image: string; // картинка
 	description: string; // описание товара
 	title: string; // название товара
-	price: number | string | null; // цена
+	price: number | null; // цена
 }
 ```
 
-- IBasket: Интерфейс, описывающий содержимое корзины.
-
-```
-export interface IBasket {
-	items: HTMLElement[]; // элементы представляющие товары в корзине
-}
-```
-
-- IOrderForm: Интерфейс адреса доставки.
+- IOrderForm: интерфейс, описывающий адрес доставки товара
 
 ```
 export interface IOrderForm {
-	paymentMethod: string; // способ оплаты (при получении/онлайн)
+	payment: string; // способ оплаты (при получении/онлайн)
 	address: string; // адресс
 }
 ```
 
-- IContactsForm: Интерфейс для контактной информации.
+- IContactsForm: интерфейс, описывающий контактные данные
 
 ```
 export interface IContactsForm {
@@ -119,47 +97,52 @@ export interface IContactsForm {
 }
 ```
 
-- ISuccess: Интерфейс для завершения заказа.
+- IContacts: интерфейс расширяет IContactsForm(контактные данные)
 
 ```
-export interface ISuccess {
-	id: string; // Идентификатор завершенного заказа
-	total: number | string; // Цена заказа (Итог)
+export interface IContacts extends IContactsForm {
+	itemsContact: string[];
 }
 ```
 
-- AppData: Интерфейс для данных приложения.
+- ICardItem: интерфейс расширяет ICardProduct(описание карточки)
 
 ```
-export interface AppData {
-	clearBasket(): void;
-// очистить корзину
-	getBasketList(): [];
-// получить список корзины
-	toggleBasketList(): void;
-// удалить или добавить товар в список корзины
-	setCatalog(): void;
-// установить список товаров
-	getTotal(): number;
-// получить общую сумму заказа
-	setOrderField(): void;
-// отслеживать изменения полей заказа
-	setContactsField(): void;
-// отслеживать изменения полей контактной информации
+export interface ICardItem extends ICardProduct {
+	buttonText: string;
+	itemCountProducts: string | number;
 }
 ```
 
-### Компоненты данных
+- IOrder: интерфейс, описывающий список товаров
 
-Класс AppData отвечает за данные всех функций, реализованных в проекте. Содержит методы управления корзиной, каталогом, полями заказа и контактами.
+```
+export interface IOrder extends IOrderForm, IContactsForm {
+	items: string[];
+	total: number | string;
+}
+```
 
-- `clearBasket` - очистить корзину.
-- `getBasketList` - получить список корзины.
-- `toggleBasketList` - удалить или добавить товар в список корзины.
-- `setCatalog` - установить список товаров.
-- `getTotal` - получить общую сумму заказа.
-- `setOrderField` - отслеживать изменения полей заказа.
-- `setContactsField` - отслеживать изменения полей контактной информации.
+## Компоненты данных
+
+### AppData
+Класс AppData отвечает за данные всех функций, реализованных в проекте. Содержит методы управления корзиной, каталогом, полями заказа и контактами
+
+- toggleBasket(item: ProductCard) - удалить или добавить товар в список корзины
+- clearBasket() - очистить корзину
+- getTotal() - получить общую сумму заказа
+- getBasket(): ProductCard[] - получить список BasketItem(список корзины)
+- setCatalog(items: ICardProduct[]) - установить список товаров
+- setOrderField(field: keyof IOrderForm, value: string) - отслеживать изменения полей заказа
+- setContactField(field: keyof IContactsForm, value: string) - отслеживать изменения полей контактной информации
+- validateOrder() - валидация полей (address)
+- validateContacts() - валидация полей (email, phone)
+
+### Larek
+Класс Larek отвечает получаемые данные с сервера
+
+- getProductList(): Promise<ICardProduct[]> - получаем список товара
+- orderProduct(order: IOrder): Promise<ISuccess> - результат заказа
 
 ## Базовый код
 
@@ -182,6 +165,7 @@ api базовый класс для взаимодействия с API и се
 
 - `get` - get запрос (ответ с сервера)
 - `post` - post запрос (отправить данные на сервер)
+- handleResponse(response: Response): Promise<object> - обрабатывает запрос и возвращает промис с данными
 
 ### Component:
 
@@ -201,46 +185,69 @@ Model базовая модель, позволяющая отличить ее 
 
 Компоненты представления включают в себя несколько классов:
 
-### Modal: Класс для управления поведением модальных окон.
+### Modal
+Класс для управления поведением модальных окон
+
 - set content(value: HTMLElement) - установить содержимое модального окна
 - `open` 
 - `close`
-- `render` 
+- `render` - вывод данных
 
-### Form: класс для управления формами.
+### Form
+Класс для управления формами
 
 - protected onInputChange(field: keyof T, value: string) - изменение значений полей формы
 - set valid(value: boolean) - установить валидацию полей
 - set errors(value: string) - установить вывод об ошибках
 - render(state: Partial<T> & IFormState) - возвращает форму с новым состоянием 
 
-### newCard: класс для создание карточки.
+### Card
+Класс для создание карточки
 
-- set id(value: string) - установить id товара.
-- get id(): string - получить id товара.
-- set title(value: string) - установить название товара.
-- get title(): string - получить название товара.
-- set category(value: string) - установить категорию товара.
-- set price(value: number | null) - установить цену товара.
-- set description(value: string) - установить описание товара.
+- set id(value: string) - установить id товара
+- get id(): string - получить id товара
+- set title(value: string) - установить название товара
+- get title(): string - получить название товара
+- set buttonText(status: string) - получить текст кнопки
+- set category(value: string) - установить категорию товара
+- set price(value: number | null) - установить цену товара
+- set description(value: string) - установить описание товара
 
-### Basket: класс для отображение корзины.
+### Basket
+Класс для отображение корзины
 
-- set _items(items: HTMLElement[]) - вставить данные в корзину.
+- set items(items: HTMLElement[]) - вставить данные в корзину
+- set selected(items: ProductCard[]) - наличие товара в корзине
+- set total(total: number) - установить сумма всех синнапсов
+
+### Page
+Класс для управления интерфейса главной страницы
+
+- set counter(value: number | null) - счетчик товара
+- set catalog(items: HTMLElement[]) - вывод каталога товара
+- set locked(value: boolean) - прокрутка страницы (вкл/выкл)
 
 Эти классы наследуются от Component класса и содержат методы для управления соответствующими элементами.
 
-### Contacts: класс для управления формой контактных данных пользователя.
+### Contacts
+Класс для управления формой контактных данных пользователя.
 
 - set phone(value: string) - телефон
 - set email(value: string) - эл. почта
 
+### Order
+Класс предназначен для выбора способа оплаты и ввода адреса доставки
+
+- public paymentMethod(value: HTMLElement) - способ оплаты
+- public set address(value: string) - адрес
+
 Эти классы наследуются от Form класса и содержат методы для управления соответствующими элементами.
 
-### Success: класс для успешной оплаты.
+### Success
+Класс для успешной оплаты.
 
-- set _id() - id заказа.
-- set _total(total: number | string) - общая сумма товаров.
+- set total(total: string | number) - сумма всех синнапсов
+
 
 ## Взаимодействие между компонентами
 
@@ -270,9 +277,9 @@ Model базовая модель, позволяющая отличить ее 
 - view : отображает пользовательский интерфейс и данные модели на экране.
 - presenter : действует как посредник между моделью и представлением.
 
-В проекте используется несколько типов данных и интерфейсов, включая IPage, CategoryType, ICardProduct, IBasket, IOrderForm, IContactsForm, ISuccess и AppData. Класс AppData отвечает за данные всех функций, реализованных в проекте. Включает в себя методы управления корзиной, каталогом, полями заказа и полями контактов.
+В проекте используется несколько типов данных и интерфейсов, включая ICardProduct, IOrderForm, IContacts, IContactsForm, ICardItem и IOrder. Класс AppData отвечает за данные всех функций, реализованных в проекте. Включает в себя методы управления корзиной, каталогом, полями заказа и полями контактов.
 
-Базовый код включает в себя несколько классов: EventEmitter, api, Componentи Model. Компоненты представления включают в себя несколько классов: Modal, Form, Success, Basket, Contacts, newCard. Каждый из этих классов включает методы для управления соответствующими компонентами. 
+Базовый код включает в себя несколько классов: EventEmitter, api, Componentи Model. Компоненты представления включают в себя несколько классов: Modal, Form, Success, Basket. Каждый из этих классов включает методы для управления соответствующими компонентами. 
 
 ## Событие
 Проект Web-larek использует класс EventEmitter для обработки событий. Этот класс действует как центральный брокер событий, позволяя компонентам подписываться на события, прослушивать их и реагировать соответствующим образом.
