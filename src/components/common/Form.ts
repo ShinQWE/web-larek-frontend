@@ -1,10 +1,11 @@
-import {Component} from "../Component";
-import {IEvents} from "../events";
-import {ensureElement} from "../../../utils/utils";
+import { Component } from "../base/Component";
+import { IEvents } from "../base/events";
+import { ensureElement } from "../../utils/utils";
 
-interface IFormState {
+
+export interface IFormState {
    valid: boolean;
-   errors: string;
+   errors: string[];
 }
 
 export class Form<T> extends Component<IFormState> {
@@ -45,11 +46,16 @@ export class Form<T> extends Component<IFormState> {
       this.setText(this._errors, value);
    }
 
+   toggleClassOrderForm(element: HTMLElement, className: string, force?: boolean) {
+      force === undefined ? element.classList.toggle(className) 
+      : element.classList.toggle(className, force);
+   }
+
+
    render(state: Partial<T> & IFormState) {
       const {valid, errors, ...inputs} = state;
       super.render({valid, errors});
       Object.assign(this, inputs);
       return this.container;
-
    }
 }
