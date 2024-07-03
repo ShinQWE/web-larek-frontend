@@ -8,13 +8,11 @@ import {
 	TProductStatus,
 	IContacts
 } from '../types';
+import { TErrorsContacts, TErrorsOrder } from '../types';
 
 export type CatalogChangeEvent = {
 	catalog: ProductCard[];
 };
-
-export type TErrorsOrder = Partial<Record<keyof IOrder, string>>; // тип описывающий ошибки интерфейса IOrder
-export type TErrorsContacts = Partial<Record<keyof IContacts, string>>; // тип описывающий ошибки интерфейса IContacts
 
 export class ProductCard extends Model<ICardProduct> {
 	id: string; 

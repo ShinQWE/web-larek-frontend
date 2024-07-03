@@ -39,16 +39,16 @@ export class Form<T> extends Component<IFormState> {
    }
 
    set valid(value: boolean) {
-      this._submit.disabled = !value;
+      this.setDisabled(this._submit, !value);
    }
+
 
    set errors(value: string) {
       this.setText(this._errors, value);
    }
 
    toggleClassOrderForm(element: HTMLElement, className: string, force?: boolean) {
-      force === undefined ? element.classList.toggle(className) 
-      : element.classList.toggle(className, force);
+      this.toggleClass(element, className, force);
    }
 
 

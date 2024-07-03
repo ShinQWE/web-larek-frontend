@@ -32,17 +32,9 @@ export class Order extends Form<IOrderForm> {
       }
    }
 
-   set phone(value: string) {
-      (this.container.elements.namedItem('phone') as HTMLInputElement).value = value;
-   }
-
    public paymentMethod(value: HTMLElement) {
       this._cardBtn.classList.toggle('button_alt-active');
       this._cashBtn.classList.toggle('button_alt-active');
-   }
-
-   set email(value: string) {
-      (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
    }
 }
 

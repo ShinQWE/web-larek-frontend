@@ -55,7 +55,7 @@ export class Card extends Component<ICardItem> {
 	}
 
 	set id(value: string) {
-		this.container.dataset.id = value;
+		super.container.dataset.id = value;
 	}
 
 	get id(): string {
@@ -63,7 +63,7 @@ export class Card extends Component<ICardItem> {
 	}
 
 	set title(value: string) {
-		this.setText(this._title, value);
+		super.setText(this._title, value);
 	}
 
 	get title(): string {
@@ -75,31 +75,40 @@ export class Card extends Component<ICardItem> {
 	}
 
 	set index(value: string | string[]) {
-		this.setText(this._index, value);
+		super.setText(this._index, value);
 	}
 
 	set buttonText(status: string) {
-		this.setText(this._button, status);
+		if (status === 'active') {
+			this.setText(this._button, 'В корзину');
+		} else {
+			this.setText(this._button, 'Убрать с корзины');
+		}
 	}
 
 	set image(value: string) {
-		this.setImage(this._image, value, this.title);
+		super.setImage(this._image, value, this.title);
 	}
 
    set category(value: string) {
-		this.setText(this._category, value);
+		super.setText(this._category, value);
+		this.addCategoryClass(value);
+}
+
+	addCategoryClass(value: string) {
 		this._category.classList.add(categoryType[value]);
 	}
 
+
    set price(value: null | number) {
-		this.setText(this._price, value !== null  ? `${value} синапсов` : 'Бесценно');
+		super.setText(this._price, value !== null  ? `${value} синапсов` : 'Бесценно');
       if(this._button && value === null) {
 				this.setDisabled(this._button, true); 
 		}
 	}
 
 	set description(value: string | string[]) {
-		this.setText(this._description, value);
+		super.setText(this._description, value);
 	}
    
 }

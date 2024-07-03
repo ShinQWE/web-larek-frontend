@@ -8,7 +8,13 @@ export interface ICardProduct {
 	description: string; // описание товара
 	title: string; // название товара
 	price: number | null; // цена
+	itemCount: number;
+   status: TProductStatus;
 }
+
+export type TErrorsOrder = Partial<Record<keyof IOrder, string>>; // тип описывающий ошибки интерфейса IOrder
+export type TErrorsContacts = Partial<Record<keyof IContacts, string>>; // тип описывающий ошибки интерфейса IContacts
+
 
 // Адрес доставки товара
 export interface IOrderForm {

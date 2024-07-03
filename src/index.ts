@@ -43,6 +43,11 @@ const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 // Переиспользуемые части интерфейса
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const contacts = new FormContacts(cloneTemplate(contactsTemplate), events);
+const success = new Success(cloneTemplate(successTemplate), {
+	onClick: () => {
+		modal.close();
+	},
+});
 const order = new Order(cloneTemplate(orderTemplate), events, {
 	onClick: onClickForPayment,
 });
@@ -71,14 +76,9 @@ events.on('contacts:submit', () => {
 		.then((result) => {
 			appData.clearBasket();
 			page.counter = appData.getBasket().length;
-			const success = new Success(cloneTemplate(successTemplate), {
-				onClick: () => {
-					modal.close();
-				},
-			});
 			success.total = result.total;
 			modal.render({
-				content: success.render({}),
+					content: success.render({}),
 			});
 		})
 		.catch((err) => {
