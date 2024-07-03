@@ -192,18 +192,8 @@ export interface IOrder extends IOrderForm, IContactsForm {
 ## Компоненты данных
 
 ProductCard - реализует экземпляр товара
-```
-export class ProductCard extends Model<ICardProduct> {
-	id: string; 
-	category: string; // категория товара
-	image: string; // картинка
-	description: string; // описание товара
-	title: string; // название товара
-	price: number | null; // цена
-	itemCount: number;
-	status: TProductStatus = 'active';
-}
-```
+export class ProductCard extends Model<ICardProduct> 
+
 
 ### AppData
 Класс AppData отвечает за данные всех функций, реализованных в проекте. Содержит методы управления корзиной, каталогом, полями заказа и контактами,
