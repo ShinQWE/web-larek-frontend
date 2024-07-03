@@ -191,8 +191,23 @@ export interface IOrder extends IOrderForm, IContactsForm {
 
 ## Компоненты данных
 
+ProductCard - реализует экземпляр товара
+```
+export class ProductCard extends Model<ICardProduct> {
+	id: string; 
+	category: string; // категория товара
+	image: string; // картинка
+	description: string; // описание товара
+	title: string; // название товара
+	price: number | null; // цена
+	itemCount: number;
+	status: TProductStatus = 'active';
+}
+```
+
 ### AppData
-Класс AppData отвечает за данные всех функций, реализованных в проекте. Содержит методы управления корзиной, каталогом, полями заказа и контактами
+Класс AppData отвечает за данные всех функций, реализованных в проекте. Содержит методы управления корзиной, каталогом, полями заказа и контактами,
+а также наследует класс ProductCard
 
 - toggleBasket(item: ProductCard) - удалить или добавить товар в список корзины
 - clearBasket() - очистить корзину
@@ -215,60 +230,72 @@ export interface IOrder extends IOrderForm, IContactsForm {
 Базовый код включает в себя несколько классов:
 
 ### EventEmitter:
-
+Проект Web-larek использует класс EventEmitter для обработки событий. Этот класс действует как центральный брокер событий, позволяя компонентам подписываться на события, прослушивать их и реагировать соответствующим образом.
 EventEmitter базовый класс, который позволяет компонентам подписываться на события или прослушивать их и реагировать на них.
 
-- `on` - Установить обработчик на событие
-- `off` - Снять обработчик с события
-- `emit` - Инициировать событие с данными
-- `onAll` - Слушать все события
-- `offAll` - Сбросить все обработчики
-- `trigger` - Сделать коллбек триггер, генерирующий событие при вызове
+- on<T extends object>(eventName: EventName, callback: (event: T) => void) - Установить обработчик на событие
+- off(eventName: EventName, callback: Subscriber) - Снять обработчик с события
+- emit<T extends object>(eventName: string, data?: T) - Инициировать событие с данными
+- onAll(callback: (event: EmitterEvent) => void) - Слушать все события
+- offAll() - Сбросить все обработчики
+- trigger<T extends object>(eventName: string, context?: Partial<T>) - Сделать коллбек триггер, генерирующий событие при вызове
 
-### api:
+### api
+api базовый класс для взаимодействия с API и сервером, также наследует класс Api
 
-api базовый класс для взаимодействия с API и сервером.
-
-- `get` - get запрос (ответ с сервера)
-- `post` - post запрос (отправить данные на сервер)
+- get(uri: string) - get запрос, ответ с сервера
+- post(uri: string, data: object, method: ApiPostMethods = 'POST') - post запрос, отправить данные на сервер
 - handleResponse(response: Response): Promise<object> - обрабатывает запрос и возвращает промис с данными
 
 ### Component:
+Component класс представления, от которого наследуются все остальные классы представлений. Инструментарий для работы с DOM в дочерних компонентах.
+Это элемент DOM, который будет использоваться как контейнер для компонента. В этом контейнере будут добавляться создаваемые элементы, а также выполняться различные операции по конфигурации DOM-структур.
 
-Component класс представления, от которого наследуются все остальные классы представлений.
-
-- `toggleClass` - Переключить класс
-- `setDisabled` - Сменить статус блокировки
-- `render` - Вернуть корневой DOM-элемент
+- toggleClass(element: HTMLElement, className: string, force?: boolean) - Переключить класс
+- setText(element: HTMLElement, value: unknown) - Установить текстовое содержимое
+- setDisabled(element: HTMLElement, state: boolean) - Сменить статус блокировки
+- setHidden(element: HTMLElement) - Скрыть
+- setVisible(element: HTMLElement) - Показать
+- setImage(element: HTMLImageElement, src: string, alt?: string) - Установить изображение с алтернативным текстом
+- render(data?: Partial<T>): HTMLElement - Вернуть корневой DOM-элемент
 
 ### Model:
 
 Model базовая модель, позволяющая отличить ее от простых объектов данных.
 
-- `emitChanges` - Сообщить всем что модель поменялась
+// Гарда для проверки на модель (функция для проверки)
 
-## View
+```
+export const isModel = (obj: unknown): obj is Model<any> => {
+	return obj instanceof Model;
+};
+```
+
+- emitChanges(event: string, payload?: object) - cообщить всем что модель поменялась
+
+## Компоненты представления
 
 Компоненты представления включают в себя несколько классов:
 
 ### Modal
-Класс для управления поведением модальных окон
+Класс для управления поведением модальных окон, наследует класс Component
 
 - set content(value: HTMLElement) - установить содержимое модального окна
-- `open` 
-- `close`
-- `render` - вывод данных
+- open() 
+- close()
+- render(data: IModalData): HTMLElement - вывод данных
 
 ### Form
-Класс для управления формами
+Класс для управления формами, наследует класс Component
 
 - protected onInputChange(field: keyof T, value: string) - изменение значений полей формы
 - set valid(value: boolean) - установить валидацию полей
 - set errors(value: string) - установить вывод об ошибках
+- toggleClassOrderForm(element: HTMLElement, className: string, force?: boolean) - форма заказа
 - render(state: Partial<T> & IFormState) - возвращает форму с новым состоянием 
 
 ### Card
-Класс для создание карточки
+Класс для создание карточки, наследует класс Component
 
 - set id(value: string) - установить id товара
 - get id(): string - получить id товара
@@ -280,14 +307,14 @@ Model базовая модель, позволяющая отличить ее 
 - set description(value: string) - установить описание товара
 
 ### Basket
-Класс для отображение корзины
+Класс для отображение корзины, наследует класс Component
 
 - set items(items: HTMLElement[]) - вставить данные в корзину
 - set selected(items: ProductCard[]) - наличие товара в корзине
 - set total(total: number) - установить сумма всех синнапсов
 
 ### Page
-Класс для управления интерфейса главной страницы
+Класс для управления интерфейса главной страницы, наследует класс Component
 
 - set counter(value: number | null) - счетчик товара
 - set catalog(items: HTMLElement[]) - вывод каталога товара
@@ -296,13 +323,13 @@ Model базовая модель, позволяющая отличить ее 
 Эти классы наследуются от Component класса и содержат методы для управления соответствующими элементами.
 
 ### Contacts
-Класс для управления формой контактных данных пользователя.
+Класс для управления формой контактных данных пользователя, наследуются от Form класса
 
 - set phone(value: string) - телефон
 - set email(value: string) - эл. почта
 
 ### Order
-Класс предназначен для выбора способа оплаты и ввода адреса доставки
+Класс предназначен для выбора способа оплаты и ввода адреса доставки, наследуются от Form класса
 
 - public paymentMethod(value: HTMLElement) - способ оплаты
 - public set address(value: string) - адрес
@@ -346,6 +373,3 @@ Model базовая модель, позволяющая отличить ее 
 В проекте используется несколько типов данных и интерфейсов, включая ICardProduct, IOrderForm, IContacts, IContactsForm, ICardItem и IOrder. Класс AppData отвечает за данные всех функций, реализованных в проекте. Включает в себя методы управления корзиной, каталогом, полями заказа и полями контактов.
 
 Базовый код включает в себя несколько классов: EventEmitter, api, Componentи Model. Компоненты представления включают в себя несколько классов: Modal, Form, Success, Basket. Каждый из этих классов включает методы для управления соответствующими компонентами. 
-
-## Событие
-Проект Web-larek использует класс EventEmitter для обработки событий. Этот класс действует как центральный брокер событий, позволяя компонентам подписываться на события, прослушивать их и реагировать соответствующим образом.
