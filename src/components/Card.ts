@@ -66,9 +66,9 @@ export class Card extends Component<ICardItem> {
 
 	set buttonText(status: string) {
 		if (status === 'active') {
-			this.setText(this._button, 'В корзину');
+			super.setText(this._button, 'В корзину');
 		} else {
-			this.setText(this._button, 'Убрать с корзины');
+			super.setText(this._button, 'Убрать с корзины');
 		}
 	}
 
