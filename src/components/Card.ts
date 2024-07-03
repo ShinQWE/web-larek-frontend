@@ -1,24 +1,10 @@
 import { Component } from './base/Component';
-import { ICardItem } from '../types/index';
+import { ICardItem, categoryType, paymentType } from '../types/index';
 import { ensureElement } from '../utils/utils';
 
 export interface ICardActions {
    onClick: (event: MouseEvent) => void;
 }
-
-// Тип категории товара
-export const categoryType: { [value: string]: string } = {
-	'софт-скил': 'card__category_soft',
-	'хард-скил': 'card__category_hard',
-   'кнопка': 'card__category_button',
-	'дополнительное': 'card__category_additional',
-   'другое': 'card__category_other',
-};
-
-export const paymentType: { [value: string]: string } = {
-	'card': 'online',
-	'cash': 'offline',
-};
 
 
 export class Card extends Component<ICardItem> {

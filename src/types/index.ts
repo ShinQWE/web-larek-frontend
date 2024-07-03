@@ -15,6 +15,19 @@ export interface ICardProduct {
 export type TErrorsOrder = Partial<Record<keyof IOrder, string>>; // тип описывающий ошибки интерфейса IOrder
 export type TErrorsContacts = Partial<Record<keyof IContacts, string>>; // тип описывающий ошибки интерфейса IContacts
 
+// Тип категории товара
+export const categoryType: { [value: string]: string } = {
+	'софт-скил': 'card__category_soft',
+	'хард-скил': 'card__category_hard',
+   'кнопка': 'card__category_button',
+	'дополнительное': 'card__category_additional',
+   'другое': 'card__category_other',
+};
+
+export const paymentType: { [value: string]: string } = {
+	'card': 'online',
+	'cash': 'offline',
+};
 
 // Адрес доставки товара
 export interface IOrderForm {

@@ -3,14 +3,14 @@ import './scss/styles.scss';
 import { EventEmitter } from './components/base/events';
 import { Page } from './components/Page';
 import { AppState, ProductCard } from './components/AppData';
-import { Card, paymentType } from './components/Card';
+import { Card } from './components/Card';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { LarekAPI } from './components/Larek';
 import { API_URL, CDN_URL } from './utils/constants';
 import { Modal } from './components/common/Modal';
 import { Basket } from './components/common/Basket';
 import { Order, FormContacts, Success } from './components/Order';
-import { IContactsForm, IOrder, IOrderForm } from './types';
+import { IContactsForm, IOrder, IOrderForm, paymentType } from './types';
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
