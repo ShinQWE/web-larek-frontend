@@ -61,6 +61,72 @@ MVP:
 
 В проекте используется несколько типов данных и интерфейсов:
 
+- IBasketView: интерфейс, описывающий содержимое корзины
+
+```
+export interface IBasketView {
+	items: HTMLElement[];
+	total: number | string;
+	selected: string[];
+}
+```
+
+- IFormState: интерфейс описывает состояние полей формы
+
+```
+export interface IFormState {
+   valid: boolean;
+   errors: string[];
+}
+
+```
+
+- categoryType: тип категории товара
+
+```
+export const categoryType: { [value: string]: string } = {
+	'софт-скил': 'card__category_soft',
+	'хард-скил': 'card__category_hard',
+	'кнопка': 'card__category_button',
+	'дополнительное': 'card__category_additional',
+	'другое': 'card__category_other',
+};
+```
+
+- paymentType: тип способа оплаты
+
+```
+export const paymentType: { [value: string]: string } = {
+	'card': 'online',
+	'cash': 'offline',
+};
+```
+
+- IActions: интерфейс определяет действия, которые могут быть выполнены с карточкой товара
+
+```
+export interface IActions {
+	onClick: (event: MouseEvent) => void;
+}
+```
+
+- IPage: интерфейс определяет основные характеристики главной страницы
+
+```
+export interface IPage {
+	catalog: HTMLElement[]; // каталог карт выводимых на сайт
+	locked: boolean; // открыта ли карточка
+}
+```
+
+- IModalData: интерфейс описывает содержимое модального окна
+
+```
+interface IModalData {
+   content: HTMLElement;
+}
+```
+
 - ProductStatus: тип статус товара
 
 ```
