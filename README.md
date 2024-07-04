@@ -74,7 +74,7 @@ export interface IBasketView {
 - IFormState: интерфейс описывает состояние полей формы
 
 ```
-export interface IFormState {
+interface IFormState {
    valid: boolean;
    errors: string[];
 }
@@ -84,7 +84,7 @@ export interface IFormState {
 - categoryType: тип категории товара
 
 ```
-export const categoryType: { [value: string]: string } = {
+const categoryType: { [value: string]: string } = {
 	'софт-скил': 'card__category_soft',
 	'хард-скил': 'card__category_hard',
 	'кнопка': 'card__category_button',
@@ -96,7 +96,7 @@ export const categoryType: { [value: string]: string } = {
 - paymentType: тип способа оплаты
 
 ```
-export const paymentType: { [value: string]: string } = {
+const paymentType: { [value: string]: string } = {
 	'card': 'online',
 	'cash': 'offline',
 };
@@ -105,7 +105,7 @@ export const paymentType: { [value: string]: string } = {
 - IActions: интерфейс определяет действия, которые могут быть выполнены с карточкой товара
 
 ```
-export interface IActions {
+interface IActions {
 	onClick: (event: MouseEvent) => void;
 }
 ```
@@ -113,7 +113,7 @@ export interface IActions {
 - IPage: интерфейс определяет основные характеристики главной страницы
 
 ```
-export interface IPage {
+interface IPage {
 	catalog: HTMLElement[]; // каталог карт выводимых на сайт
 	locked: boolean; // открыта ли карточка
 }
@@ -130,12 +130,12 @@ interface IModalData {
 - ProductStatus: тип статус товара
 
 ```
-export type TProductStatus = 'active' | 'closed';
+type TProductStatus = 'active' | 'closed';
 ```
 
 - ICardProduct: интерфейс описание карточки
 ```
-export interface ICardProduct {
+interface ICardProduct {
 	id: string; // id
 	category: string; // категория товара
 	image: string; // картинка
@@ -148,7 +148,7 @@ export interface ICardProduct {
 - IOrderForm: интерфейс, описывающий адрес доставки товара
 
 ```
-export interface IOrderForm {
+interface IOrderForm {
 	payment: string; // способ оплаты (при получении/онлайн)
 	address: string; // адресс
 }
@@ -157,7 +157,7 @@ export interface IOrderForm {
 - IContactsForm: интерфейс, описывающий контактные данные
 
 ```
-export interface IContactsForm {
+interface IContactsForm {
 	email: string; // email
 	phone: string; // телефон
 }
@@ -166,7 +166,7 @@ export interface IContactsForm {
 - IContacts: интерфейс расширяет IContactsForm(контактные данные)
 
 ```
-export interface IContacts extends IContactsForm {
+interface IContacts extends IContactsForm {
 	itemsContact: string[];
 }
 ```
@@ -174,7 +174,7 @@ export interface IContacts extends IContactsForm {
 - ICardItem: интерфейс расширяет ICardProduct(описание карточки)
 
 ```
-export interface ICardItem extends ICardProduct {
+interface ICardItem extends ICardProduct {
 	buttonText: string;
 	itemCountProducts: string | number;
 }
@@ -183,7 +183,7 @@ export interface ICardItem extends ICardProduct {
 - IOrder: интерфейс, описывающий список товаров
 
 ```
-export interface IOrder extends IOrderForm, IContactsForm {
+interface IOrder extends IOrderForm, IContactsForm {
 	items: string[];
 	total: number | string;
 }
