@@ -14,6 +14,7 @@ export type CatalogChangeEvent = {
 	catalog: ProductCard[];
 };
 
+// реализует экземпляр товара
 export class ProductCard extends Model<ICardProduct> {
 	id: string; 
 	category: string; // категория товара
