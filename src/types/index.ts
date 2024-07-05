@@ -1,3 +1,18 @@
+// Интерфейс, описывающий содержимое корзины
+export interface IBasketView {
+	items: HTMLElement[];
+	total: number | string;
+	selected: string[];
+}
+
+export interface IModalData {
+   content: HTMLElement;
+}
+
+export interface IFormState {
+   valid: boolean;
+   errors: string[];
+}
 
 export interface IPage {
 	catalog: HTMLElement[]; // каталог карт выводимых на сайт

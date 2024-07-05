@@ -5,16 +5,8 @@ import {
 	ensureElement,
 	} from '../../utils/utils';
 import { EventEmitter } from '../base/events';
-import { ICardProduct } from '../../types';
+import { IBasketView, ICardProduct } from '../../types';
 
-
-
-// Интерфейс, описывающий содержимое корзины
-export interface IBasketView {
-	items: HTMLElement[];
-	total: number | string;
-	selected: string[];
-}
 
 export class Basket extends Component<IBasketView> {
 	protected _list: HTMLElement;
