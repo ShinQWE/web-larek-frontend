@@ -5,30 +5,16 @@ import {
 	IOrderForm,
 	IOrder,
 	IContactsForm,
-	TProductStatus,
-	IContacts
+	
+	IContacts,
+	IAppData,
 } from '../types';
 import { TErrorsContacts, TErrorsOrder } from '../types';
 
-export type CatalogChangeEvent = {
-	catalog: ProductCard[];
-};
-
-// реализует экземпляр товара
-export class ProductCard extends Model<ICardProduct> {
-	id: string; 
-	category: string; // категория товара
-	image: string; // картинка
-	description: string; // описание товара
-	title: string; // название товара
-	price: number | null; // цена
-	itemCount: number;
-	status: TProductStatus = 'active';
-}
-
-export class AppState extends ProductCard {
-	basketItem: ProductCard[] = [];
-	catalog: ProductCard[];
+export class AppState extends Model<IAppData>  {
+	basketItem: ICardProduct[] = [];
+	catalog: ICardProduct[];
+	
 	order: IOrder = {
 		items: [],
 		address: '',
@@ -37,10 +23,11 @@ export class AppState extends ProductCard {
 		phone: '',
 		total: 0,
 	};
+	
 	TErrorsOrder: TErrorsOrder = {};
 	TErrorsContacts: TErrorsContacts = {};
 
-	toggleBasket(item: ProductCard) {
+	toggleBasket(item: ICardProduct) {
 		if (item.status === 'active' && item.price !== null) {
 			if (!this.basketItem.includes(item)) {
 				this.basketItem.push(item);
@@ -68,12 +55,15 @@ export class AppState extends ProductCard {
 		return this.basketItem.reduce((a, c) => a + c.price, 0);
 	}
 
-	getBasket(): ProductCard[] {
+	getBasket(): ICardProduct[] {
 		return this.basketItem;
 	}
 
 	setCatalog(items: ICardProduct[]) {
-		this.catalog = items.map((item) => new ProductCard(item, this.events));
+		this.catalog = items.map((item) => ({
+			...item,
+			status: 'active',
+		}));
 		this.emitChanges('items:changed', { catalog: this.catalog });
 	}
 

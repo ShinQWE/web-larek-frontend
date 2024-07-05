@@ -1,10 +1,8 @@
 import { Component } from './base/Component';
-import { ICardItem, categoryType, paymentType } from '../types/index';
+import { ICardActions, ICardItem, categoryType, paymentType } from '../types/index';
 import { ensureElement } from '../utils/utils';
 
-export interface ICardActions {
-   onClick: (event: MouseEvent) => void;
-}
+
 
 
 export class Card extends Component<ICardItem> {

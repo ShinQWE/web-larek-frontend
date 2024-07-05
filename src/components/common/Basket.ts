@@ -5,7 +5,8 @@ import {
 	ensureElement,
 	} from '../../utils/utils';
 import { EventEmitter } from '../base/events';
-import { ProductCard } from '../AppData';
+import { ICardProduct } from '../../types';
+
 
 
 // Интерфейс, описывающий содержимое корзины
@@ -56,7 +57,7 @@ export class Basket extends Component<IBasketView> {
 		}
 	}
 
-	set selected(items: ProductCard[]) {
+	set selected(items: ICardProduct[]) {
 		if (items.length) {
 			this.setDisabled(this._button, false);
 		} else {

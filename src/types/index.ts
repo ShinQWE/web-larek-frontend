@@ -1,4 +1,26 @@
-export type TProductStatus = 'active' | 'closed';
+
+export interface IPage {
+	catalog: HTMLElement[]; // каталог карт выводимых на сайт
+	locked: boolean; // открыта ли карточка
+}
+
+export interface IActions {
+	onClick: (event: MouseEvent) => void;
+}
+
+export interface ISuccessActions {
+	onClick: () => void;
+}
+
+// Оформление заказа
+export interface ISuccess {
+	id: string; // Идентификатор завершенного заказа
+	total: number; // Цена заказа (Итог)
+}
+
+export interface ICardActions {
+   onClick: (event: MouseEvent) => void;
+}
 
 // Интерфейс описание карточки
 export interface ICardProduct {
@@ -9,7 +31,7 @@ export interface ICardProduct {
 	title: string; // название товара
 	price: number | null; // цена
 	itemCount: number;
-   status: TProductStatus;
+   status: 'active' | 'closed';
 }
 
 export type TErrorsOrder = Partial<Record<keyof IOrder, string>>; // тип описывающий ошибки интерфейса IOrder
@@ -54,5 +76,22 @@ export interface ICardItem extends ICardProduct {
 export interface IOrder extends IOrderForm, IContactsForm {
 	items: string[];
 	total: number | string;
+}
+
+export interface IAppData {
+	basketItem: ICardProduct[];
+	catalog: ICardProduct[];
+	order: IOrder;
+	TErrorsOrder: TErrorsOrder;
+	TErrorsContacts: TErrorsContacts;
+	toggleBasket(item: ICardProduct): void;
+	clearBasket(): void;
+	getTotal(): number;
+	getBasket(): ICardProduct[];
+	setCatalog(items: ICardProduct[]): void;
+	setOrderField(field: keyof IOrderForm, value: string): void;
+	setContactField(field: keyof IContactsForm, value: string): void;
+	validateOrder(): boolean;
+	validateContacts(): boolean;
 }
 

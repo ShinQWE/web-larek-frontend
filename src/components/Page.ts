@@ -1,12 +1,9 @@
 import {Component} from "./base/Component";
 import {IEvents} from "./base/events";
 import {ensureElement} from "../utils/utils";
+import { IPage } from "../types";
 
 
-export interface IPage {
-	catalog: HTMLElement[]; // каталог карт выводимых на сайт
-	locked: boolean; // открыта ли карточка
-}
 
 export class Page extends Component<IPage> {
    protected _counter: HTMLElement;
@@ -37,10 +34,6 @@ export class Page extends Component<IPage> {
    }
 
    set locked(value: boolean) {
-      if (value) {
-         this._wrapper.classList.add('page__wrapper_locked');
-      } else {
-         this._wrapper.classList.remove('page__wrapper_locked');
-      }
+      this.toggleClass(this._wrapper, 'page__wrapper_locked', value);
    }
 }

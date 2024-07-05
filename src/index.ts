@@ -2,15 +2,16 @@ import './scss/styles.scss';
 
 import { EventEmitter } from './components/base/events';
 import { Page } from './components/Page';
-import { AppState, ProductCard } from './components/AppData';
+import { AppState, } from './components/AppData';
 import { Card } from './components/Card';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { LarekAPI } from './components/Larek';
 import { API_URL, CDN_URL } from './utils/constants';
 import { Modal } from './components/common/Modal';
 import { Basket } from './components/common/Basket';
-import { Order, FormContacts, Success } from './components/Order';
-import { IContactsForm, IOrder, IOrderForm, paymentType } from './types';
+import { Order, FormContacts } from './components/Order';
+import { ICardProduct, IContactsForm, IOrder, IOrderForm, paymentType } from './types';
+import { Success } from './components/Success';
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -120,7 +121,7 @@ events.on('order:open', () => {
 });
 
 // Открыть карточку
-events.on('card:select', (item: ProductCard) => {
+events.on('card:select', (item: ICardProduct) => {
 	const card = new Card(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => {
 			events.emit('item:toggle', item);
@@ -166,14 +167,14 @@ events.on('basket:open', () => {
 });
 
 // Очистка корзины
-events.on('item:toggle', (item: ProductCard) => {
+events.on('item:toggle', (item: ICardProduct) => {
 	appData.toggleBasket(item);
 
 	const basketItems = appData.getBasket();
 	page.counter = basketItems.length;
 });
 
-events.on('basket:changed', (items: ProductCard[]) => {
+events.on('basket:changed', (items: ICardProduct[]) => {
 	basket.items = items.map((item, index) => {
 		const card = new Card(cloneTemplate(cardBasketTemplate), {
 			onClick: () => {
